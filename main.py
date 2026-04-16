@@ -4,8 +4,23 @@ import httpx
 from fastapi import FastAPI, Request, BackgroundTasks
 from supabase import create_client, Client
 from pydantic import BaseModel
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+# 允许你的前端域名访问
+origins = [
+    "https://lde-console.vercel.app", # 你的前端地址
+    "http://localhost:3000",          # 本地调试
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,           # 允许跨域
+    allow_credentials=True,
+    allow_methods=["*"],             # 允许所有方法 (GET, POST等)
+    allow_headers=["*"],             # 允许所有请求头
+)
 
 # 环境变量配置
 SUPABASE_URL = os.getenv("SUPABASE_URL")
